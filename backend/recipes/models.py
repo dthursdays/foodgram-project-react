@@ -27,8 +27,6 @@ class Tag(models.Model):
         null=False
     )
 
-    REQUIRED_FIELDS = ['name', 'slug', 'color']
-
     def __str__(self):
         return self.name
 
@@ -120,7 +118,10 @@ class Recipe(models.Model):
         related_name='favorites'
     )
 
-    is_in_shooping_cart = models.ManyToManyField(
+    is_in_shopping_cart = models.ManyToManyField(
         User,
         related_name='shopping_cart'
     )
+
+    class Meta:
+        ordering = ('-id',)

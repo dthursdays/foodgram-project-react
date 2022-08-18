@@ -1,8 +1,11 @@
+from django.http import HttpResponse
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
+from rest_framework.filters import SearchFilter
 from rest_framework.response import Response
 
-from . import mixins, models, serializers
+from . import cart, filters, mixins, models, serializers
 
 
 class TagViewSet(mixins.ListRetrieveViewSet):
@@ -14,6 +17,9 @@ class TagViewSet(mixins.ListRetrieveViewSet):
 class RecipeViewSet(viewsets.ModelViewSet):
     queryset = models.Recipe.objects.all()
     serializer_class = serializers.RecipeSerializer
+
+    filter_backends = (DjangoFilterBackend, )
+    filterset_class = filters.RecipeFilter
 
     def get_serializer_class(self):
         if self.action == 'create':
@@ -109,8 +115,25 @@ class RecipeViewSet(viewsets.ModelViewSet):
             request.user.shopping_cart.remove(recipe)
             return Response(status=status.HTTP_204_NO_CONTENT)
 
+    @action(methods=['get'], detail=False)
+    def download_shopping_cart(self, request):
+        if request.method == 'GET':
+            recipes = request.user.shopping_cart.all()
+            ingredients = models.IngredientInRecipe.objects.filter(
+                recipe__in=recipes
+            )
+            all_ings = [(i.ingredient.name, i.amount,
+                        i.ingredient.measurement_unit) for i in ingredients]
+            lines = cart.normalize(all_ings)
+            response = HttpResponse(content_type='text/plain')
+            response['Content-Disposition'] = 'attachment; filename=cart.txt'
+            response.writelines(lines)
+            return response
+
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = models.Ingredient.objects.all()
     serializer_class = serializers.IngredientSerializer
+    filter_backends = (DjangoFilterBackend, SearchFilter, )
     pagination_class = None
+    search_fields = ('^name',)
