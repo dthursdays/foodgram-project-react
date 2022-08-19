@@ -5,7 +5,8 @@ from . import models
 
 class RecipeAdmin(admin.ModelAdmin):
     def favorite_count(self, obj):
-        queryset = models.Recipe.is_favorited.through.objects.filter(recipe_id=obj.id)
+        queryset = models.Recipe.is_favorited.through.objects.filter(
+            recipe_id=obj.id)
         return queryset.count()
 
     list_display = ('name', 'author')

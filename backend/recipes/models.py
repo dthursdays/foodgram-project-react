@@ -34,7 +34,6 @@ class Tag(models.Model):
 class Ingredient(models.Model):
     name = models.CharField(
         max_length=200,
-        unique=True,
         blank=False,
         null=False
     )
@@ -125,6 +124,6 @@ class Recipe(models.Model):
 
     class Meta:
         ordering = ('-id',)
-    
+
     def __str__(self):
         return self.name
