@@ -6,7 +6,8 @@ from . import models
 class RecipeAdmin(admin.ModelAdmin):
     def favorite_count(self, obj):
         queryset = models.Recipe.is_favorited.through.objects.filter(
-            recipe_id=obj.id)
+            recipe_id=obj.id
+        )
         return queryset.count()
 
     list_display = ('name', 'author')
@@ -15,12 +16,12 @@ class RecipeAdmin(admin.ModelAdmin):
 
 
 class IngredientInRecipeAdmin(admin.ModelAdmin):
-    list_display = ('name_and_id', 'amount_and_mu', 'recipe')
+    list_display = ('ingredient_name', 'ingredient_amount', 'recipe')
 
-    def name_and_id(self, obj):
-        return (f'{obj.ingredient.name} id:{obj.ingredient.id}')
+    def ingredient_name(self, obj):
+        return (f'{obj.ingredient.name} id: {obj.ingredient.id}')
 
-    def amount_and_mu(self, obj):
+    def ingredient_amount(self, obj):
         return (f'{obj.amount} {obj.ingredient.measurement_unit}')
 
 

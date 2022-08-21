@@ -18,13 +18,17 @@ class CustomUserSerializer(UserSerializer):
 
     class Meta:
         model = User
-        fields = ('email', 'id', 'username', 'first_name', 'last_name',
-                  'is_subscribed')
+        fields = (
+            'email', 'id', 'username', 'first_name',
+            'last_name', 'is_subscribed'
+        )
 
     def get_is_subscribed(self, obj):
         user = self.context['request'].user
-        return (user.is_authenticated and
-                user.follows.filter(author_id=obj.id).exists())
+        return (
+            user.is_authenticated and
+            user.follows.filter(author_id=obj.id).exists()
+        )
 
 
 class FavoriteRecipeSerializer(serializers.ModelSerializer):
@@ -40,20 +44,23 @@ class UserFollowSerializer(UserSerializer):
 
     class Meta:
         model = User
-        fields = ('email', 'id', 'username', 'first_name', 'last_name',
-                  'is_subscribed', 'recipes', 'recipes_count')
+        fields = (
+            'email', 'id', 'username', 'first_name', 'last_name',
+            'is_subscribed', 'recipes', 'recipes_count'
+        )
         read_only_fields = ('id', )
 
     def get_is_subscribed(self, obj):
         user = self.context['request'].user
-        return (user.is_authenticated and
-                user.follows.filter(author=obj.id).exists())
+        return (
+            user.is_authenticated and
+            user.follows.filter(author=obj.id).exists()
+        )
 
     def get_recipes(self, obj):
         author_recipes = Recipe.objects.filter(author=obj.id)
         serializer = FavoriteRecipeSerializer(author_recipes, many=True)
-
         return serializer.data
 
     def get_recipes_count(self, obj):
-        return Recipe.objects.filter(author=obj.id).count()
+        return obj.recipes.all().count()

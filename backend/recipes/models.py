@@ -15,7 +15,6 @@ class Tag(models.Model):
     )
 
     color = ColorField(
-        unique=True,
         blank=False,
         null=False
     )

@@ -26,22 +26,27 @@ class CustomUserViewSet(UserViewSet):
             if request.user.follows.filter(author=author).exists():
                 return Response(
                     {'errors': 'Вы уже подписаны на этого автора'},
-                    status=status.HTTP_400_BAD_REQUEST)
+                    status=status.HTTP_400_BAD_REQUEST
+                )
             if author == request.user:
                 return Response(
                     {'errors': 'Вы не можете подписаться сами на себя'},
-                    status=status.HTTP_400_BAD_REQUEST)
+                    status=status.HTTP_400_BAD_REQUEST
+                )
 
             Follow.objects.create(user=request.user, author=author)
-            serializer = UserFollowSerializer(author,
-                                              context={'request': request})
+            serializer = UserFollowSerializer(
+                author, context={'request': request}
+            )
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-        elif request.method == 'DELETE':
+        if request.method == 'DELETE':
             if not request.user.follows.filter(author=author).exists():
                 return Response(
                     {'errors': 'Этого пользователя нет в ваших подписках'},
-                    status=status.HTTP_400_BAD_REQUEST)
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
             Follow.objects.get(user=request.user, author=author).delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -51,12 +56,12 @@ class CustomUserViewSet(UserViewSet):
         authors = User.objects.filter(followers__in=follows)
         page = self.paginate_queryset(authors)
         if page is not None:
-            serializer = UserFollowSerializer(page,
-                                              context={'request': request},
-                                              many=True)
+            serializer = UserFollowSerializer(
+                page, context={'request': request}, many=True
+            )
             return self.get_paginated_response(serializer.data)
 
-        serializer = UserFollowSerializer(authors,
-                                          context={'request': request},
-                                          many=True)
+        serializer = UserFollowSerializer(
+            authors, context={'request': request}, many=True
+        )
         return Response(serializer.data)
