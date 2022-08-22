@@ -58,7 +58,7 @@ class UserFollowSerializer(UserSerializer):
         )
 
     def get_recipes(self, obj):
-        author_recipes = Recipe.objects.filter(author=obj.id)
+        author_recipes = Recipe.objects.filter(author=obj.id)[:3]
         serializer = FavoriteRecipeSerializer(author_recipes, many=True)
         return serializer.data
 

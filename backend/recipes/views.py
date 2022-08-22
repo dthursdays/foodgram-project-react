@@ -30,7 +30,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         return self.serializer_action_classes.get(
             self.action,
-            serializers.CreateSerializer
+            serializers.RecipeSerializer
         )
 
     def create(self, request, *args, **kwargs):

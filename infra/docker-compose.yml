@@ -8,7 +8,7 @@ services:
       - ./.env
 
   web:
-    image: ../backend
+    image: nsologub/foodgram_backend:v1.1.08.2022
     restart: always
     volumes:
       - static_value:/app/static/
