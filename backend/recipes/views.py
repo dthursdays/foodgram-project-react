@@ -144,7 +144,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             for ingredient in queryset
         ]
         ingredients_sum = utils.sum_ingredients(all_ingredients)
-        lines = utils.convert_ingredients_to_lines(ingredients_sum)
+        lines = utils.get_ingredients_strings(ingredients_sum)
         response = HttpResponse(content_type='text/plain')
         response['Content-Disposition'] = 'attachment; filename=cart.txt'
         response.writelines(lines)

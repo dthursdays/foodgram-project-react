@@ -8,7 +8,7 @@ def sum_ingredients(all_ingredients):
     return ingredients_sum
 
 
-def convert_ingredients_to_lines(ingredients_sum):
+def get_ingredients_strings(ingredients_sum):
     lines = ['А вот и ваш список покупок:\n']
     lines += [
         f'{name} - {amount} {measurement_unit}\n'
@@ -17,6 +17,8 @@ def convert_ingredients_to_lines(ingredients_sum):
     lines.append('\n')
     lines.append('Спасибо за использование сервиса FoodGram!\n')
     lines.append('Бэкенд проекта выполнил Никита Сологуб\n')
-    lines.append('Репозиторий на github: '
-                 'https://github.com/dthursdays/foodgram-project-react')
+    lines.append(
+        'Репозиторий на github: '
+        'https://github.com/dthursdays/foodgram-project-react'
+    )
     return lines
