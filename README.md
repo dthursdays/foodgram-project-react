@@ -21,9 +21,3 @@ docker-compose exec web python manage.py collectstatic --no-input
 docker-compose exec web python manage.py loaddata dump.json 
 ```
 В бд загрузятся ингредиенты и тэги
-
-docker build -t foodgram-backend
-docker run foodgram-backend
-
-docker build -t nsologub/foodgram_backend:v1.1.08.2022 .
-docker push nsologub/foodgram_backend:v1.1.08.2022
