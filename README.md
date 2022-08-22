@@ -20,4 +20,4 @@ docker-compose exec web python manage.py migrate
 docker-compose exec web python manage.py collectstatic --no-input
 docker-compose exec web python manage.py loaddata dump.json 
 ```
-В бд загрузятся ингредиенты и тэги
+В бд загрузятся ингредиенты, тэги, несколько тестовых пользователей и рецептов
