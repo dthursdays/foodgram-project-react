@@ -26,6 +26,11 @@ class Tag(models.Model):
         null=False
     )
 
+    class Meta:
+        ordering = ('-id',)
+        verbose_name = u'Тэг'
+        verbose_name_plural = u'Тэги'
+
     def __str__(self):
         return self.name
 
@@ -40,6 +45,10 @@ class Ingredient(models.Model):
     measurement_unit = models.CharField(
         max_length=200
     )
+
+    class Meta:
+        verbose_name = u'Ингредиент'
+        verbose_name_plural = u'Ингредиенты'
 
     def __str__(self):
         return self.name
@@ -64,6 +73,10 @@ class IngredientInRecipe(models.Model):
             MinValueValidator(1)
         ]
     )
+
+    class Meta:
+        verbose_name = u'Ингредиент в рецепте'
+        verbose_name_plural = u'Ингредиенты в рецепте'
 
     def __str__(self):
         return self.ingredient.name
@@ -123,6 +136,8 @@ class Recipe(models.Model):
 
     class Meta:
         ordering = ('-id',)
+        verbose_name = u'Рецепт'
+        verbose_name_plural = u'Рецепты'
 
     def __str__(self):
         return self.name

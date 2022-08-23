@@ -18,6 +18,6 @@ docker-compose up -d --build
 ```
 docker-compose exec web python manage.py migrate
 docker-compose exec web python manage.py collectstatic --no-input
-docker-compose exec web python manage.py loaddata dump.json 
+docker-compose exec web python manage.py loaddata dump.json
 ```
 В бд загрузятся ингредиенты, тэги, несколько тестовых пользователей и рецептов
