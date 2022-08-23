@@ -18,7 +18,7 @@ class RecipeAdmin(admin.ModelAdmin):
 
 class IngredientInRecipeAdmin(admin.ModelAdmin):
     list_display = ('recipe', 'ingredient_name', 'ingredient_amount')
-    search_fields = ('recipe__name')
+    search_fields = ('recipe__name', )
 
     def ingredient_name(self, obj):
         return (f'{obj.ingredient.name} id: {obj.ingredient.id}')
